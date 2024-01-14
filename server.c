@@ -20,7 +20,7 @@ int main()
 	else{printf("serverFD = %i\n",serversocket);}
 	serveradr.sin_family = AF_INET;
 	serveradr.sin_port = htons(port);
-	serveradr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	serveradr.sin_addr.s_addr = inet_addr("178.208.81.25");
 	
 	char S_adr[64] = {0};
 	inet_ntop(AF_INET,&serveradr.sin_addr,S_adr,64);

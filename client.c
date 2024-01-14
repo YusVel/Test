@@ -26,7 +26,7 @@ int main()
 	}
 	serveradr.sin_family = AF_INET;
 	serveradr.sin_port = htons(port);
-	serveradr.sin_addr.s_addr = inet_addr("127.0.0.1");
+	serveradr.sin_addr.s_addr = inet_addr("178.208.81.25");
 	if(connect(clientsocket,(struct sockaddr*)&serveradr, sizeof(serveradr))==-1)
 	{
 		printf("ERROR! Fail of BIND serversocet"); exit(1);
