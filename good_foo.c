@@ -1,4 +1,4 @@
-
+#define PORT 5000
 double calculate(double x, double y, char action)
 {
 	switch (action)
@@ -57,7 +57,7 @@ printf("INPUT ERROR! ENTER INT AGAIN!!! ");
 return num;
 }
 
-void get_adress(int sock, char adr[], int size_adr)
+void get_adress_from_sock(int sock, char adr[], int size_adr)
 {
 	
 	struct sockaddr_in a = {0};
@@ -68,7 +68,20 @@ void get_adress(int sock, char adr[], int size_adr)
 }
 
 
-void get_my_IP(char adr[])
+void get_my_IP(char adr[], int size_adr)
 {
-	
+	struct sockaddr_in host_adr = {0};
+	gethostname(adr,size_adr);
+	struct hostent *host;
+	if ((host = gethostbyname(adr)) == NULL)
+	{
+        printf("gethostbyname error\n");
+        exit(0);
+    }
+	host_adr.sin_family = AF_INET;
+	host_adr.sin_port = htons(PORT);
+	host_adr.sin_addr = *((struct in_addr*)host->h_addr_list[0]);
+	char *tmp = inet_ntoa(host_adr.sin_addr);
+	sprintf(adr,"%s", inet_ntoa(host_adr.sin_addr));
+
 }

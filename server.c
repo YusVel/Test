@@ -1,4 +1,7 @@
 #include "good_foo.h"
+#define MSG_SIZE  256
+#define ADRESS "178.208.81.25" ///удаленный сервер Нидерланды
+#define PORT 5000
 
 int main()
 {
@@ -10,25 +13,26 @@ int main()
 	if(serversocket==-1){printf("ERROR! Fail of getting serverFD"); exit(1);}
 	else{printf("serverFD = %i\n",serversocket);}
 	serveradr.sin_family = AF_INET;
-	serveradr.sin_port = htons(port);
+	serveradr.sin_port = htons(PORT);
 	int choice = 0;
-	char S_adr[64] = {0};
-	gethostname(S_adr,64);
-	printf("HOSTNAME: %s\n",S_adr);
+	char S_adr[MSG_SIZE] = {0};
+	
+	gethostname(S_adr,MSG_SIZE);
+	printf("SERVERNAME: %s\n",S_adr);
+	get_my_IP(S_adr,MSG_SIZE);
+	
 	do
 	{
-	printf("Укажите какой адрес сервера использовать(IPv4):\n");
-	printf("1 - НИДЕРЛАНДЫ\n");
-	printf("2 - Localhost loopback (127.0.0.1)\n");
-	printf("3 - IP адресс, назначенный сетью(роутером/провайдером) \n");
-	printf("4 - Ввести в адресс ручную -->");
+	printf("Укажите какой адрес использоват для инициализации сокета (IPv4):\n");
+	printf("1 - Localhost loopback (127.0.0.1)\n");
+	printf("2 - IP адрес: %s - назначен вашим роутером/провайдером\n",S_adr);
+	printf("3 - Ввести адрес вручную -->");
 	choice = get_valid_int();
 	switch(choice)
 	{
-		case 1:serveradr.sin_addr.s_addr = inet_addr(ADRESS);break;
-		case 2:serveradr.sin_addr.s_addr = inet_addr("127.0.0.1");break;
-		case 3:serveradr.sin_addr.s_addr = inet_addr("127.0.0.1");break;
-		case 4: printf("IPv4 (ddd.ddd.ddd.ddd): "); 
+		case 1:serveradr.sin_addr.s_addr = inet_addr("127.0.0.1");break;
+		case 2:serveradr.sin_addr.s_addr = inet_addr(S_adr);break;
+		case 3: printf("IPv4 (ddd.ddd.ddd.ddd): "); 
 				char tmp[14] = {0};
 				mark:
 				scanf("%s",tmp);
@@ -66,7 +70,7 @@ int main()
 	}
 	else
 	{
-		get_adress (clientsocket,S_adr,64);
+		get_adress_from_sock(clientsocket,S_adr,64);
 		printf("ACCEPT new client (%s)!\n",S_adr);
 	}
 	char msg[MSG_SIZE] = "Hello, my friend!";
