@@ -10,6 +10,7 @@
 #include "good_foo.c"
 
 #define MSG_SIZE  256
+#define ADRESS "178.208.81.25" ///удаленный сервер Нидерланды
 #define port 5000
 
 double calculate (double x,double y, char action);
