@@ -22,6 +22,8 @@ int main()
 
 	int choice = 0;
 	char S_adr[64] = {0};
+	gethostname(S_adr,64);
+	printf("HOSTNAME: %s\n",S_adr);
 	do
 	{
 	printf("Укажите кокой адрес сервера использовать(IPv4):\n");

@@ -62,7 +62,13 @@ void get_adress(int sock, char adr[], int size_adr)
 	
 	struct sockaddr_in a = {0};
 	socklen_t s = sizeof(a);
-	int err = getsockname(sock, (struct sockaddr*)&a,&s);
+	int err = getpeername(sock, (struct sockaddr*)&a,&s);
 	if(err==-1){printf("ERROR getsockname");};
-	printf("IP address is: %s\n", inet_ntoa(a.sin_addr));
+	sprintf(adr,"%s", inet_ntoa(a.sin_addr));
+}
+
+
+void get_my_IP(char adr[])
+{
+	
 }

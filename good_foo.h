@@ -18,3 +18,4 @@ int good_num(char msg[],int size_of_msg);
 int good_action(char ch);
 void get_adress(int sock, char adr[], int size_adr);
 int get_valid_int();
+void get_my_IP(char adr[]);
