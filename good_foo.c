@@ -67,8 +67,35 @@ void get_adress_from_sock(int sock, char adr[], int size_adr)
 	sprintf(adr,"%s", inet_ntoa(a.sin_addr));
 }
 
+void get_CLIENT_IP( char buffer[], int s_buffer)
+{
+const char* google_dns_server = "192.168.0.1";
+int dns_port = 0;
+ 
+struct sockaddr_in serv ={0};
+ 
+int sock = socket ( AF_INET, SOCK_DGRAM, 0);
+ 
 
-void get_my_IP(char adr[], int size_adr)
+if(sock < 0)
+{
+perror("Socket error");
+}
+serv.sin_family = AF_INET;
+serv.sin_addr.s_addr = inet_addr(google_dns_server);
+serv.sin_port = htons( 0 );
+int err = connect( sock , (const struct sockaddr*) &serv , sizeof(serv) );
+if(err==-1){printf("connect faild (get_client_IP)\n");}
+struct sockaddr_in name;
+socklen_t namelen = sizeof(name);
+err = getsockname(sock, (struct sockaddr*) &name, &namelen);
+
+inet_ntop(AF_INET, &name.sin_addr, buffer, s_buffer);
+shutdown(sock,SHUT_RDWR);
+close(sock); 
+}
+
+void get_SERVER_IP(char adr[], int size_adr)
 {
 	struct sockaddr_in host_adr = {0};
 	gethostname(adr,size_adr);
@@ -77,11 +104,16 @@ void get_my_IP(char adr[], int size_adr)
 	{
         printf("gethostbyname error\n");
         exit(0);
-    }
+   	}
 	host_adr.sin_family = AF_INET;
 	host_adr.sin_port = htons(PORT);
 	host_adr.sin_addr = *((struct in_addr*)host->h_addr_list[0]);
 	char *tmp = inet_ntoa(host_adr.sin_addr);
 	sprintf(adr,"%s", inet_ntoa(host_adr.sin_addr));
-
+	if(adr[0]=='1'&&adr[1]=='2'&&adr[2]=='7'&&adr[4]=='0')
+	{
+	get_CLIENT_IP(adr,size_adr);
+	}
 }
+
+

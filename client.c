@@ -26,7 +26,7 @@ int main()
 	char S_adr[MSG_SIZE] = {0};
 	gethostname(S_adr,MSG_SIZE);
 	printf("CLIENTNAME: %s\n",S_adr);
-	get_my_IP(S_adr,MSG_SIZE);
+	get_CLIENT_IP(S_adr,MSG_SIZE);
 	
 	do
 	{

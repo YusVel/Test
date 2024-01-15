@@ -19,7 +19,7 @@ int main()
 	
 	gethostname(S_adr,MSG_SIZE);
 	printf("SERVERNAME: %s\n",S_adr);
-	get_my_IP(S_adr,MSG_SIZE);
+	get_SERVER_IP(S_adr,MSG_SIZE);
 	
 	do
 	{
