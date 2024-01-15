@@ -38,6 +38,25 @@ int good_action(char ch)
 	else{return 0;}
 }
 
+
+int get_valid_int()
+{
+
+int num = 0;
+int good_read =scanf("%d",&num);
+while(good_read!=1||getchar()!=10)
+{
+printf("INPUT ERROR! ENTER INT AGAIN!!! ");
+	
+	while (getchar()!=10)
+	{	
+		good_read = 0;
+	}
+	good_read = scanf("%d",&num);
+}
+return num;
+}
+
 void get_adress(int sock, char adr[], int size_adr)
 {
 	
@@ -45,5 +64,5 @@ void get_adress(int sock, char adr[], int size_adr)
 	socklen_t s = sizeof(a);
 	int err = getsockname(sock, (struct sockaddr*)&a,&s);
 	if(err==-1){printf("ERROR getsockname");};
-	inet_ntop(AF_INET,(struct sockaddr*)&a,adr,size_adr);
+	printf("IP address is: %s\n", inet_ntoa(a.sin_addr));
 }
