@@ -2,6 +2,7 @@
 #define MSG_SIZE  256
 #define ADRESS "178.208.81.25" ///удаленный сервер Нидерланды
 #define PORT 5000
+#define LIM_CLIENTS 4
 
 int main()
 {
@@ -9,9 +10,7 @@ int main()
 	int serversocket,clientsocket;
 	struct sockaddr_in serveradr = {0}, clientadr ={0};
 	
-	serversocket = socket(AF_INET,SOCK_STREAM,0);
-	if(serversocket==-1){printf("ERROR! Fail of getting serverFD"); exit(1);}
-	else{printf("serverFD = %i\n",serversocket);}
+	serversocket = SOCKET(AF_INET,SOCK_STREAM,0);
 	serveradr.sin_family = AF_INET;
 	serveradr.sin_port = htons(PORT);
 	int choice = 0;
@@ -45,34 +44,16 @@ int main()
 	printf("SERVER ADRESS: %s\n",S_adr);
 	printf("SERVER PORT: %i\n",ntohs(serveradr.sin_port));
 	
-	if(bind(serversocket,(struct sockaddr*)&serveradr, sizeof(serveradr))==-1)
-	{
-		printf("ERROR! Fail of BIND serversocet"); exit(1);
-	}
-	else
-	{
-		printf("BIND succesed!\n");
-	}
+	BIND(serversocket,&serveradr, sizeof(serveradr));
 	
-	if(listen(serversocket,5)==-1)
-	{
-		printf("ERROR! Fail of LISTEN serversocet"); exit(1);
-	}
-	else
-	{
-		printf("LISTENING....\n");
-	}
+	LISTEN(serversocket,LIM_CLIENTS);
+	
 	int clientadr_size = sizeof(clientadr);
-	clientsocket = accept(serversocket,(struct sockaddr*)&clientadr, &clientadr_size);
-	if(clientsocket ==-1)
-	{
-		printf("ERROR! Fail of ACCEPT clientsocet"); exit(1);
-	}
-	else
-	{
-		get_adress_from_sock(clientsocket,S_adr,64);
-		printf("ACCEPT new client (%s)!\n",S_adr);
-	}
+	
+	clientsocket = ACCEPT(serversocket,&clientadr, &clientadr_size);
+	get_adress_from_sock(clientsocket,S_adr,64);
+	printf("ACCEPT new client (%s)!\n",S_adr);
+
 	char msg[MSG_SIZE] = "Hello, my friend!";
 	write(clientsocket,msg,MSG_SIZE);
 	memset(msg,'\0',MSG_SIZE);

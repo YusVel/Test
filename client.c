@@ -8,9 +8,7 @@ int main()
 	int serversocket,clientsocket;
 	struct sockaddr_in serveradr = {0};
 	clientsocket = socket(AF_INET,SOCK_STREAM,0);
-	
 
-	
 	if(clientsocket==-1)
 	{
 	printf("ERROR! Fail of getting clientFD"); exit(1);

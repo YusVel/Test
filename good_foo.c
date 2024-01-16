@@ -115,5 +115,35 @@ void get_SERVER_IP(char adr[], int size_adr)
 	get_CLIENT_IP(adr,size_adr);
 	}
 }
+ int BIND (int socketFD, const struct sockaddr_in *addr, socklen_t addr_size)
+ {
+	 int result = bind (socketFD,(struct sockaddr*)addr,addr_size);
+	 if(result==-1){perror("\n***BINDING ERROR***\n"); exit(EXIT_FAILURE);}
+	 else {printf("***BINDING SUCCESSED***\n"); return result;}
+ }
 
-
+ int SOCKET (int domain, int type, int protocol)
+ {
+	 int result = socket (domain, type, protocol);
+	 if(result==-1){perror("\n***SOCKET CREATION ERROR***\n"); exit(EXIT_FAILURE);}
+	 else {printf("SOCKET FILE DESCRIPTION: %i \n",result);return result;}
+ }
+ 
+  int ACCEPT (int socket_server, const struct sockaddr_in *addr, socklen_t *addr_size)
+ {
+	 int result = accept (socket_server,(struct sockaddr*)addr,addr_size);
+	 if(result==-1){perror("\n***ACCEPTION ERROR***\n"); exit(EXIT_FAILURE);}
+	 else {return result;}
+ }
+ int CONNECT (int socket_server, const struct sockaddr_in *addr_server, socklen_t addr_size)
+ {
+	 int result = connect (socket_server,(struct sockaddr*)addr_server,addr_size);
+	 if(result==-1){perror("\n***CONNECTION ERROR***\n"); exit(EXIT_FAILURE);}
+	 else {printf("***CONNECTION SUCCESSED***\n");return result;}
+ }
+  int LISTEN (int socket_server, int lim_clients)
+ {
+	 int result = listen (socket_server,lim_clients);
+	 if(result==-1){perror("\n***LISTENING ERROR***\n"); exit(EXIT_FAILURE);}
+	 else {printf("LISTENING.....\n");return result;}
+ }

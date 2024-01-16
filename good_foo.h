@@ -18,3 +18,8 @@ void get_adress_from_sock(int sock, char adr[], int size_adr);
 int get_valid_int();
 void get_SERVER_IP(char adr[], int size_adr);
 void get_CLIENT_IP( char *buffer, int s_buffer);
+int BIND (int socketFD, const struct sockaddr_in *addr, socklen_t addr_size);
+int ACCEPT (int socket_server, const struct sockaddr_in *addr, socklen_t *addr_size);
+int SOCKET (int domain, int type, int protocol);
+int CONNECT (int socket_server, const struct sockaddr_in *addr_server, socklen_t addr_size);
+int LISTEN (int socket_server, int lim_clients);
