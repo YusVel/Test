@@ -23,3 +23,5 @@ int ACCEPT (int socket_server, const struct sockaddr_in *addr, socklen_t *addr_s
 int SOCKET (int domain, int type, int protocol);
 int CONNECT (int socket_server, const struct sockaddr_in *addr_server, socklen_t addr_size);
 int LISTEN (int socket_server, int lim_clients);
+int check_connetion_with_server(int clientsocket, const struct sockaddr_in serveradr );
+void check_connetion_with_clients(int serversocket,int clients_cock[],struct sockaddr_in clientadr[], int *count_clients);

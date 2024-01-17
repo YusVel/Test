@@ -7,7 +7,7 @@ int main()
 	printf("Server: Hello!\n");
 	int serversocket,clientsocket;
 	struct sockaddr_in serveradr = {0};
-	clientsocket = socket(AF_INET,SOCK_STREAM,0);
+	clientsocket = SOCKET(AF_INET,SOCK_STREAM,0);
 
 	if(clientsocket==-1)
 	{
@@ -25,7 +25,7 @@ int main()
 	gethostname(S_adr,MSG_SIZE);
 	printf("CLIENTNAME: %s\n",S_adr);
 	get_CLIENT_IP(S_adr,MSG_SIZE);
-	
+
 	do
 	{
 	printf("Укажите адрес сервера для подключения(IPv4):\n");
@@ -49,19 +49,20 @@ int main()
 	}while(choice<1||choice>3);	
 	
 
-	if(connect(clientsocket,(struct sockaddr*)&serveradr, sizeof(serveradr))==-1)
-	{
-		printf("ERROR! Fail of CONNECTION to server"); exit(1);
-	}
-	else
-	{
-		printf("CONNECTION successed!\n");
-	}
+	CONNECT(clientsocket,&serveradr, sizeof(serveradr));
+
+
 	char msg[MSG_SIZE] = "0";
+	/*
 	read(clientsocket,msg,MSG_SIZE);
 	printf("SERVER: ""%s""\n",msg);
-
-
+	*/
+	while(1)
+	{
+	check_connetion_with_server(clientsocket,serveradr); //проверяем соединение с сервером
+	}
+	
+	/*
 	do
 	{
 		read(clientsocket,msg,MSG_SIZE);
@@ -114,6 +115,6 @@ int main()
 	
 	shutdown(clientsocket,SHUT_RDWR);
 	close(clientsocket);
-	
+	*/
 return 0;
 }

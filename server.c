@@ -2,13 +2,16 @@
 #define MSG_SIZE  256
 #define ADRESS "178.208.81.25" ///удаленный сервер Нидерланды
 #define PORT 5000
-#define LIM_CLIENTS 4
+#define LIM_CLIENTS 10 //количество клиентов которое может принимать сервер
 
 int main()
 {
+	int count_of_connected_clients = 0;
 	printf("Server: Hello!\n");
-	int serversocket,clientsocket;
-	struct sockaddr_in serveradr = {0}, clientadr ={0};
+	int serversocket;
+	int clientsocket[LIM_CLIENTS];
+	struct sockaddr_in serveradr = {0};
+	struct sockaddr_in clientadr[LIM_CLIENTS] ={{0},{0},{0},{0},{0},{0},{0},{0},{0},{0}}; // инициализация  0 адресов 10-и клиентов
 	
 	serversocket = SOCKET(AF_INET,SOCK_STREAM,0);
 	serveradr.sin_family = AF_INET;
@@ -48,21 +51,29 @@ int main()
 	
 	LISTEN(serversocket,LIM_CLIENTS);
 	
-	int clientadr_size = sizeof(clientadr);
+	int clientadr_size = sizeof(clientadr[0]);
 	
-	clientsocket = ACCEPT(serversocket,&clientadr, &clientadr_size);
-	get_adress_from_sock(clientsocket,S_adr,64);
+	clientsocket[0] = ACCEPT(serversocket,&clientadr[0], &clientadr_size);
+	count_of_connected_clients++; 
+	get_adress_from_sock(clientsocket[0],S_adr,64);
 	printf("ACCEPT new client (%s)!\n",S_adr);
-
+	
 	char msg[MSG_SIZE] = "Hello, my friend!";
-	write(clientsocket,msg,MSG_SIZE);
+	/*
+	write(clientsocket[0],msg,MSG_SIZE);
+	*/
 	memset(msg,'\0',MSG_SIZE);
 	double x = 0;
 	double y = 0;
 	double result = 0;
+	while(1)
+	{
+	check_connetion_with_clients(serversocket,clientsocket,clientadr,&count_of_connected_clients); ///проверяем все сокеты
+	}
+	/*
 	do
 	{
-		sprintf(msg,"Введите первое число: ");
+		sprintf(msg,"Давайте решим пример! Введите первое число: ");
 		do
 		{
 		write(clientsocket,msg,MSG_SIZE);
@@ -113,12 +124,13 @@ int main()
 		if(msg[0]=='q'&&msg[1]=='\0'){break;}
 	}while(1);
 
-
 	
 	shutdown(clientsocket,SHUT_RDWR);
 	close(clientsocket);
 	shutdown(serversocket,SHUT_RDWR);
 	close(serversocket);
+	*/
+	
 	
 	return 0;
 }
